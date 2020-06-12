@@ -18,19 +18,25 @@ Move_Container = character_page_soup.findAll("div", {"class": "movecontainer"})
 
 for move in Move_Container:
 
-	print("Move Name:" , move.find("div",{"class": "movename"}).text.strip())
-	print("Startup Frames: ",move.find("div",{"class": "startup"}).text.strip())
+	print("Move Name:" , move.find("div",{"class": "movename"}).text.strip())#Other: move.select(."movename")
+	if move.select('.startup'):
+		print("Startup Frames: ",move.find("div",{"class": "startup"}).text.strip())
+
 	print("Total Frames: ",move.find("div",{"class": "totalframes"}).text.strip())
-	print("Active Frames: " ,move.find("div",{"class": "activeframes"}).text.strip())
+	if move.select('movename.activeframes'):
+		print("Active Frames: " ,move.find("div",{"class": "activeframes"}).text.strip())
+
 	print("Landing Lag: ", move.find("div",{"class": "landinglag"}).text.strip())
+
+
 	print("Base Damage: ", move.find("div",{"class": "basedamage"}).text.strip(), '%')
 
 
-	if move.find('shieldlag')!= None :
+	if move.select('.shieldlag'):	# Other : if move.find('shieldstun')!= None :	
 		print("Sheild Lag: ", move.find("div",{"class": "shieldlag"}).text.strip())	
-	if move.find('shieldstun')!= None :	
+	if move.select('.shieldstun'):	
 		print("Shield Stun: ",move.find("div",{"class": "shieldstun"}).text.strip())
-	if move.find('advantage')!= None :
+	if move.select('.advantage'):
 		print("Shield Advantage: ",move.find("div",{"class": "advantage"}).text.strip())
 	print ("-----------------------------------------------------------")
 
