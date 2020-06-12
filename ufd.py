@@ -3,16 +3,34 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 
-my_url = 'ultimateframedata.com' #note we can concatenate the /wario.php to the end of this to get a new URL for a char
 
+
+userLink = input("Copy/Paste a character page link: Ex : ('https://ultimateframedata.com/chrom.php')")
+
+my_url = userLink
 Client = uReq(my_url)
-home_page_html = Client.read()
+character_page_html = Client.read()
 Client.close()
-main_page_soup = soup(home_page_html, "html.parser") # HTML PARSER
+character_page_soup = soup(character_page_html, "html.parser")
 
 
-CharList = page_soup.findAll("div", {"class": "charactericon"})		#grabs 83 "character classes" (1 is "stats")
+Move_Container = character_page_soup.findAll("div", {"class": "movecontainer"})
 
-for l in CharList:				# this will display what we need to concat to the end of our original HTML link.
-	print (l.a['href'])
+for move in Move_Container:
+	print("Move Name:" , move.find("div",{"class": "movename"}).text.strip())
+	print("Startup Frames: ",move.find("div",{"class": "startup"}).text.strip())
+	print("Total Frames: ",move.find("div",{"class": "totalframes"}).text.strip())
+	print("Active Frames: " ,move.find("div",{"class": "activeframes"}).text.strip())
+	print("Landing Lag: ", move.find("div",{"class": "landinglag"}).text.strip())
+	print("Base Damage: ", move.find("div",{"class": "basedamage"}).text.strip())
+	print("Sheild Lag: ", move.find("div",{"class": "shieldlag"}).text.strip())
+	print("Shield Stun: ",move.find("div",{"class": "shieldstun"}).text.strip())
+	print("Shield Advantage: ",move.find("div",{"class": "advantage"}).text.strip())
+	print ("-----------------------------------------------------------")
+
+
+#CharList = main_page_soup.findAll("div", {"class": "charactericon"})		#grabs 83 "character classes" (1 is "stats")
+
+#for l in CharList:				# this will display what we need to concat to the end of our original HTML link.
+	#print (l.a['href'])
 
