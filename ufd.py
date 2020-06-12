@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as soup
 
 
 
-userLink = input("Copy/Paste a character page link: Ex : ('https://ultimateframedata.com/chrom.php')")
+userLink = input("Copy/Paste a character page link (ex 'https://ultimateframedata.com/chrom.php  '): \n")
 
 my_url = userLink
 Client = uReq(my_url)
@@ -16,20 +16,28 @@ character_page_soup = soup(character_page_html, "html.parser")
 
 Move_Container = character_page_soup.findAll("div", {"class": "movecontainer"})
 
+
+
+
+
+
 for move in Move_Container:
 
 	print("Move Name:" , move.find("div",{"class": "movename"}).text.strip())#Other: move.select(."movename")
+
 	if move.select('.startup'):
 		print("Startup Frames: ",move.find("div",{"class": "startup"}).text.strip())
-
-	print("Total Frames: ",move.find("div",{"class": "totalframes"}).text.strip())
-	if move.select('movename.activeframes'):
+	if move.select('.totalframes'):
+		print("Total Frames: ",move.find("div",{"class": "totalframes"}).text.strip())
+	if move.select('.activeframes'):
 		print("Active Frames: " ,move.find("div",{"class": "activeframes"}).text.strip())
 
-	print("Landing Lag: ", move.find("div",{"class": "landinglag"}).text.strip())
+	if move.select('.landinglag'):
+		print("Landing Lag: ", move.find("div",{"class": "landinglag"}).text.strip())
 
 
-	print("Base Damage: ", move.find("div",{"class": "basedamage"}).text.strip(), '%')
+	if move.select('.basedamage'):
+		print("Base Damage: ", move.find("div",{"class": "basedamage"}).text.strip(), '%')
 
 
 	if move.select('.shieldlag'):	# Other : if move.find('shieldstun')!= None :	
