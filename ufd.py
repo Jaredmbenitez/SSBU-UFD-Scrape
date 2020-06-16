@@ -6,14 +6,36 @@ from bs4 import BeautifulSoup as soup
 
 
 
+main_page_url = 'https://ultimateframedata.com'
+myClient = uReq(main_page_url)
+main_page_html = myClient.read()
+myClient.close()
+main_page_soup = soup(main_page_html, "html.parser")
+#####################################################################
+
+subs = input('Enter a character name: ')
+
+character_name_list = main_page_soup.findAll("div",{"class": "charactericon"})
+hrefList = [i.a['href'] for i in character_name_list]	## list of all '\chrom.php, \pacman.php, etc'
+newList = [j for j in hrefList if subs in j]	## contains a list of elements containing our substring
+
+print(newList)
 
 
 
-my_url = input("Copy/Paste a character page link (ex 'https://ultimateframedata.com/chrom.php  '): \n")
-Client = uReq(my_url)
+
+
+##################################CHARACTER PAGE SECTION ##########################
+character_url = "https://ultimateframedata.com" + newList[0]
+Client = uReq(character_url)
 character_page_html = Client.read()
 Client.close()
 character_page_soup = soup(character_page_html, "html.parser")
+
+###################################################################################
+
+
+
 
 
 
@@ -54,7 +76,9 @@ def printCharInfo(urlName):
 
 		
 
-printCharInfo(my_url)
+printCharInfo(character_url)
+
+
 #CharList = main_page_soup.findAll("div", {"class": "charactericon"})		#grabs 83 "character classes" (1 is "stats")
 
 #for l in CharList:				# this will display what we need to concat to the end of our original HTML link.
